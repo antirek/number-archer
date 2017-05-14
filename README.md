@@ -5,11 +5,11 @@
 
 ## использование
 
->> curl http://localhost:3101/number/:number
+> curl http://localhost:3101/number/:number
 
 ### Пример 
 
->> curl http://localhost:3101/number/83912745000
+> curl http://localhost:3101/number/83912745000
 
 ### Результат 
 
@@ -28,3 +28,6 @@
 }
 `````
 
+Данные
+
+https://github.com/antirek/numcap-regions
