@@ -3,11 +3,9 @@ var Joi = require('joi');
 var tracer = require('tracer').colorConsole();
 var express = require('express');
 
-
 var ResourceSchema = require('./lib/resourceSchema');
 var Finder = require('./lib/finder');
 var ConfigSchema = require('./lib/configSchema');
-
 
 var Server = function (config) {
 
@@ -38,7 +36,7 @@ var Server = function (config) {
         app.get('/:number', (req, res) => {
             var requestId = getRequestId();
             console.time(requestId);
-            
+
             var number = req.params.number;
             tracer.log(requestId, 'number:', number);
 

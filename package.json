@@ -1,15 +1,13 @@
 {
-  "name": "agi-number-archer",
+  "name": "number-archer",
   "version": "0.0.7",
-  "description": "AGI server for find concordance of number and region code",
+  "description": "http server for find concordance of number and region code",
   "main": "index.js",
   "dependencies": {
     "config": "^1.25.1",
-    "ding-dong": "0.1.1",
     "express": "^4.15.2",
     "joi": "^6.6.1",
     "mongoose": "^4.0.3",
-    "q": "^1.1.2",
     "tracer": "^0.8.7"
   },
   "devDependencies": {
@@ -21,12 +19,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/antirek/agi-number-archer.git"
+    "url": "https://github.com/antirek/number-archer.git"
   },
   "author": "Sergey Dmitriev <serge.dmitriev@gmail>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/antirek/agi-number-archer/issues"
+    "url": "https://github.com/antirek/number-archer/issues"
   },
-  "homepage": "https://github.com/antirek/agi-number-archer"
+  "homepage": "https://github.com/antirek/number-archer"
 }
