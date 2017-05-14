@@ -22,7 +22,8 @@ var Server = function (config) {
         );
 
         var app = express();
-        app.use(requestIp.mw())
+        app.use(requestIp.mw());
+        app.set('view engine', 'pug');
 
         var finder = new Finder(Resource);
         var requestCounter = 1;
@@ -36,7 +37,7 @@ var Server = function (config) {
             return q(requestCounter++, length);
         }
         
-        app.get('/:number', (req, res) => {
+        app.get('/number/:number', (req, res) => {
             var requestId = getRequestId();
             console.time(requestId);
 
@@ -57,6 +58,10 @@ var Server = function (config) {
                     tracer.err(requestId, err)
                     res.status(500).json({status: 'Error'});
                 });
+        });
+
+        app.get('/', (req, res) => {
+            res.render('index');
         });
 
         app.listen(config.port, () => {
