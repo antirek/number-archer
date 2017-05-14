@@ -1,0 +1,13 @@
+{
+  "apps": [
+    {
+      "name": "number-archer",
+      "script": "app.js",
+      "watch": false,
+      "env": {
+        "NODE_ENV": "default",
+        "NODE_CONFIG_DIR": "/etc/apps/number-archer"
+      }
+    }
+  ]
+}

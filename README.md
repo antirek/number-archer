@@ -3,7 +3,7 @@
 Соответствие телефонных номеров и регионов РФ
 
 
-## использование
+## Использование
 
 > curl http://localhost:3101/number/:number
 
@@ -28,6 +28,6 @@
 }
 `````
 
-Данные
+## Данные
 
 https://github.com/antirek/numcap-regions
