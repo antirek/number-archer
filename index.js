@@ -1,11 +1,12 @@
-var mongoose = require('mongoose');
-var Joi = require('joi');
-var tracer = require('tracer').colorConsole();
-var express = require('express');
+const mongoose = require('mongoose');
+const Joi = require('joi');
+const tracer = require('tracer').colorConsole();
+const express = require('express');
+const requestIp = require('request-ip');
 
-var ResourceSchema = require('./lib/resourceSchema');
-var Finder = require('./lib/finder');
-var ConfigSchema = require('./lib/configSchema');
+const ResourceSchema = require('./lib/resourceSchema');
+const Finder = require('./lib/finder');
+const ConfigSchema = require('./lib/configSchema');
 
 var Server = function (config) {
 
@@ -14,14 +15,16 @@ var Server = function (config) {
     };
 
     var init = function (config) {
+
         mongoose.connect(config.mongo.connectionString);        
         var Resource = mongoose.model(
           'Resource', new ResourceSchema(config.mongo.collection)
         );
 
         var app = express();
-        var finder = new Finder(Resource);
+        app.use(requestIp.mw())
 
+        var finder = new Finder(Resource);
         var requestCounter = 1;
         
         var getRequestId = function () {
@@ -38,11 +41,11 @@ var Server = function (config) {
             console.time(requestId);
 
             var number = req.params.number;
-            tracer.log(requestId, 'number:', number);
+            tracer.log(requestId, 'number:', number, 'ip:', req.clientIp);
 
             finder.findCodeForNumber(number)
                 .then((doc) => {
-                    tracer.log(requestId, doc)
+                    tracer.log(requestId, 'find:', doc)
                     if (doc) {
                         res.json(doc);
                     } else {
@@ -61,7 +64,7 @@ var Server = function (config) {
         });
     };
 
-    this.start = function () {
+    var start = function () {
         validate((err, config) => {
             if (err) {
                 tracer.log('config.js have errors', err);
@@ -72,6 +75,10 @@ var Server = function (config) {
             init(config);    
 
         });
+    };
+
+    return {
+        start: start
     };
 };
 
