@@ -8,6 +8,9 @@ const ResourceSchema = require('./lib/resourceSchema');
 const Finder = require('./lib/finder');
 const ConfigSchema = require('./lib/configSchema');
 
+
+
+
 var Server = function (config) {
 
     var validate = function (callback) {
@@ -36,26 +39,54 @@ var Server = function (config) {
             };
             return q(requestCounter++, length);
         }
+
+
+        var bindTimeout = function (req, res, next) {
+            req.timeoutId = setTimeout(() => {
+                req.timeExpired = true;
+                res.status(200).json({})
+                tracer.log('timeout expired');
+            }, config.timeout || 2000);   //timeout in ms
+            next();
+        }
+
+        var isTimeoutNotExpired = function (req) {
+            return !req.timeExpired;
+        }
+
+        var unbindTimeout = function (req) {
+            clearTimeout(req.timeoutId);
+        }
         
-        app.get('/number/:number', (req, res) => {
+        app.get('/number/:number', bindTimeout, (req, res) => {
             var requestId = getRequestId();
-            console.time(requestId);
+            console.log(requestId);
 
             var number = req.params.number;
             tracer.log(requestId, 'number:', number, 'ip:', req.clientIp);
 
             finder.findCodeForNumber(number)
                 .then((doc) => {
-                    tracer.log(requestId, 'find:', doc)
-                    if (doc) {
-                        res.json(doc);
+                    if (isTimeoutNotExpired(req)) {
+                        unbindTimeout(req);
+                        //console.log(result);
+                        //res.status(200).json(result);
+
+                        tracer.log(requestId, 'find:', doc);
+                        if (doc) {
+                            res.json(doc);
+                        } else {
+                            res.status(404).json({status: 'Not Found'});
+                        }
+                        tracer.log(requestId);
                     } else {
-                        res.status(404).json({status: 'Not Found'});
+                        tracer.log('request ready, but timeout expired');
+                        tracer.log(doc);
                     }
-                    console.timeEnd(requestId);
+                    
                 })
                 .catch((err) => {
-                    tracer.err(requestId, err)
+                    tracer.log(requestId, err);
                     res.status(500).json({status: 'Error'});
                 });
         });
