@@ -6,6 +6,7 @@ const http = require('http');
 const config = require('config');
 const console = require('tracer').colorConsole();
 const Joi = require('joi');
+const cors = require('cors');
 
 const ConfigSchema = require('./lib/configSchema');
 
@@ -27,6 +28,8 @@ var swaggerDoc = jsyaml.safeLoad(spec);
 
 var init = async function (middleware) {
   app.set('view engine', 'pug');
+
+  app.use(cors());
   // Interpret Swagger resources and attach metadata to request - must be first in swagger-tools middleware chain
   app.use(middleware.swaggerMetadata());
 

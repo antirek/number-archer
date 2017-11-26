@@ -10,6 +10,7 @@ let requestCounter = 1;
 
 exports.showNumberInfo = function(args, res, next) {
   
+  
   var timeoutId, timeExpired, requestId;
 
   var bindTimeout = function (res) {
@@ -20,11 +21,11 @@ exports.showNumberInfo = function(args, res, next) {
       }, config.timeout || 2000);   //timeout in ms
   }
 
-  var isTimeoutNotExpired = function (req) {
+  var isTimeoutNotExpired = function () {
       return !timeExpired;
   }
 
-  var unbindTimeout = function (req) {
+  var unbindTimeout = function () {
       clearTimeout(timeoutId);
   }
 
@@ -47,23 +48,23 @@ exports.showNumberInfo = function(args, res, next) {
 
   var finder = new Finder(Resource);
   finder.findCodeForNumber(number)
-      .then((doc) => {
-          if (isTimeoutNotExpired()) {
-              unbindTimeout();
-              console.log('request ready');
-              console.log(requestId, 'find:', doc);
-              if (doc) {
-                  res.json(doc);
-              } else {
-                  res.status(404).json({status: 'Not Found'});
-              }
-          } else {
-              console.log('request ready, but timeout expired');
-              console.log(requestId, 'find:', doc);
-          }
-      })
-      .catch((err) => {
-          console.log(requestId, err);
-          res.status(500).json({status: 'Error'});
-      });
+    .then((doc) => {
+        if (isTimeoutNotExpired()) {
+            unbindTimeout();
+            console.log('request ready');
+            console.log(requestId, 'find:', doc);
+            if (doc) {
+                res.json(doc);
+            } else {
+                res.status(404).json({status: 'Not Found'});
+            }
+        } else {
+            console.log('request ready, but timeout expired');
+            console.log(requestId, 'find:', doc);
+        }
+    })
+    .catch((err) => {
+        console.log(requestId, err);
+        res.status(500).json({status: 'Error'});
+    });
 }

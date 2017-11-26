@@ -1,12 +1,7 @@
----
 swagger: "2.0"
 info:
   version: "1.0.0"
-  title: "Number archer"
-  license:
-    name: "MIT"
-host: "host"
-basePath: "/v1"
+  title: "number-archer"
 schemes:
 - "http"
 - "https"
@@ -30,6 +25,10 @@ paths:
           description: "Expected response to a valid request"
           schema:
             $ref: "#/definitions/Number"
+        404:
+          description: "Not found"
+          schema: 
+            $ref: "#/definitions/Error"
         default:
           description: "unexpected error"
           schema:
@@ -37,19 +36,29 @@ paths:
       x-swagger-router-controller: "Default"
 definitions:
   Number:
-    required:
-    - "id"
-    - "name"
     properties:
-      id:
-        type: "integer"
-      name:
+      code:
         type: "string"
-      tag:
+      begin:
         type: "string"
+      end:
+        type: "string"
+      capacity:
+        type: "string"
+      operator:
+        type: "string"
+      region:        
+        type: "object"
+        properties: 
+          code:
+            type: "string"
+          title:
+            type: "string"
+          county:
+            type: "string"
   Error:
     required:
-    - "id"
+    - "status"
     properties:
-      id:
-        type: "integer"
+      status:
+        type: "string"
