@@ -1,13 +1,18 @@
 'use strict';
 
-var fs = require('fs'),
-    path = require('path'),
-    http = require('http');
+const fs = require('fs');
+const path = require('path');
+const http = require('http');
+const config = require('config');
+const console = require('tracer').colorConsole();
+const Joi = require('joi');
 
-var app = require('connect')();
+const ConfigSchema = require('./lib/configSchema');
+
+var app = require('express')();
 var swaggerTools = require('swagger-tools');
 var jsyaml = require('js-yaml');
-var serverPort = 8080;
+var serverPort = config.port;
 
 // swaggerRouter configuration
 var options = {
@@ -20,9 +25,8 @@ var options = {
 var spec = fs.readFileSync(path.join(__dirname,'api/swagger.yaml'), 'utf8');
 var swaggerDoc = jsyaml.safeLoad(spec);
 
-// Initialize the Swagger middleware
-swaggerTools.initializeMiddleware(swaggerDoc, function (middleware) {
-
+var init = async function (middleware) {
+  app.set('view engine', 'pug');
   // Interpret Swagger resources and attach metadata to request - must be first in swagger-tools middleware chain
   app.use(middleware.swaggerMetadata());
 
@@ -35,10 +39,24 @@ swaggerTools.initializeMiddleware(swaggerDoc, function (middleware) {
   // Serve the Swagger documents and Swagger UI
   app.use(middleware.swaggerUi());
 
+  app.get('/', (req, res) => {
+    res.render('index');
+  });
+
   // Start the server
-  http.createServer(app).listen(serverPort, function () {
+  app.listen(serverPort, function () {
     console.log('Your server is listening on port %d (http://localhost:%d)', serverPort, serverPort);
     console.log('Swagger-ui is available on http://localhost:%d/docs', serverPort);
   });
 
+};
+
+var validate = function (callback) {
+    Joi.validate(config, ConfigSchema, callback);
+};
+// Initialize the Swagger middleware
+swaggerTools.initializeMiddleware(swaggerDoc, (middleware)=> {
+    validate(() => {
+        init(middleware)
+    });
 });
