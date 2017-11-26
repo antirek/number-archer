@@ -1,0 +1,55 @@
+---
+swagger: "2.0"
+info:
+  version: "1.0.0"
+  title: "Number archer"
+  license:
+    name: "MIT"
+host: "host"
+basePath: "/v1"
+schemes:
+- "http"
+- "https"
+consumes:
+- "application/json"
+produces:
+- "application/json"
+paths:
+  /number/{number}:
+    get:
+      summary: "Info for a specific number"
+      operationId: "showNumberInfo"
+      parameters:
+      - name: "number"
+        in: "path"
+        description: "number for search"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Expected response to a valid request"
+          schema:
+            $ref: "#/definitions/Number"
+        default:
+          description: "unexpected error"
+          schema:
+            $ref: "#/definitions/Error"
+      x-swagger-router-controller: "Default"
+definitions:
+  Number:
+    required:
+    - "id"
+    - "name"
+    properties:
+      id:
+        type: "integer"
+      name:
+        type: "string"
+      tag:
+        type: "string"
+  Error:
+    required:
+    - "id"
+    properties:
+      id:
+        type: "integer"
