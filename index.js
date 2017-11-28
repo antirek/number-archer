@@ -17,9 +17,8 @@ var serverPort = config.port;
 
 // swaggerRouter configuration
 var options = {
-  swaggerUi: path.join(__dirname, '/swagger.json'),
   controllers: path.join(__dirname, './controllers'),
-  useStubs: process.env.NODE_ENV === 'development' // Conditionally turn on stubs (mock mode)
+  useStubs: true // Conditionally turn on stubs (mock mode)
 };
 
 // The Swagger document (require it, build it programmatically, fetch it from a URL, ...)
@@ -45,13 +44,6 @@ var init = async function (middleware) {
   app.get('/', (req, res) => {
     res.render('index');
   });
-
-  // Start the server
-  app.listen(serverPort, function () {
-    console.log('Your server is listening on port %d (http://localhost:%d)', serverPort, serverPort);
-    console.log('Swagger-ui is available on http://localhost:%d/docs', serverPort);
-  });
-
 };
 
 var validate = function (callback) {
@@ -63,3 +55,5 @@ swaggerTools.initializeMiddleware(swaggerDoc, (middleware)=> {
         init(middleware)
     });
 });
+
+module.exports = app;
