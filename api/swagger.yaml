@@ -31,7 +31,7 @@ definitions:
   Number:
     properties:
       code:
-        type: "string"
+        type: "integer"
       begin:
         type: "string"
       end:

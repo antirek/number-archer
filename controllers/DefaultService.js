@@ -8,9 +8,14 @@ const Finder = require('./../lib/finder');
 
 let requestCounter = 1;
 
-exports.showNumberInfo = function(args, res, next) {
-  
-  
+exports.showNumberInfo = function(req, res, next) {  
+
+  if (req.swagger.useStubs) {
+    res.status(200).header('cache-control', 'no-cache').send(JSON.stringify({number: 12}))
+    return
+  }
+
+  var args = req.swagger.params
   var timeoutId, timeExpired, requestId;
 
   var bindTimeout = function (res) {

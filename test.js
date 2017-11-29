@@ -17,11 +17,11 @@ parser.dereference(path.join(__dirname, './api/swagger.json'), function (err, de
         .get('/number/{number}')
         .pathParams({number: 12})
         .expectStatus(200)
-        //.expectValue('user.first', 'John')
+        .expectValue('number', 12)
         .expectHeader('cache-control', 'no-cache')
         .end(function(err, res, body) {
           if (err) throw err;
-          console.log('all good');
+          console.log('all good:', body);
           process.exit();
         });
 })
