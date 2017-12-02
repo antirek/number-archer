@@ -1,10 +1,17 @@
 var config = require('config');
-var app = require('./index');
-// Start the server
 
-var serverPort = config.port;
+var na = require('./index');
 
-app.listen(serverPort, () => {
-    console.log('Your server is listening on port %d (http://localhost:%d)', serverPort, serverPort);
-    console.log('Swagger-ui is available on http://localhost:%d/docs', serverPort);
+const Finder = require('./lib/finder');
+
+var Resource = require('./lib/resourceSchema')
+var FinderService = require('./controllers/DefaultService');
+
+var service = FinderService(Resource, Finder);
+
+na.prepare(service);
+    
+na.app.listen(config.port, () => {
+    console.log('Your server is listening on port %d (http://localhost:%d)', config.port, config.port);
+    console.log('Swagger-ui is available on http://localhost:%d/docs', config.port);
 });

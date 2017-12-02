@@ -15,15 +15,24 @@ var swaggerTools = require('swagger-tools');
 var jsyaml = require('js-yaml');
 var serverPort = config.port;
 
-// swaggerRouter configuration
-var options = {
-  controllers: path.join(__dirname, './controllers'),
-  useStubs: true // Conditionally turn on stubs (mock mode)
-};
 
 // The Swagger document (require it, build it programmatically, fetch it from a URL, ...)
 var spec = fs.readFileSync(path.join(__dirname,'api/swagger.yaml'), 'utf8');
 var swaggerDoc = jsyaml.safeLoad(spec);
+
+var options;
+
+var setOptions = function (controllers) {
+    if (!options) {
+        options = {
+            controllers: controllers,
+        };
+    }
+}
+// swaggerRouter configuration
+
+
+
 
 var init = async function (middleware) {
   app.set('view engine', 'pug');
@@ -33,9 +42,11 @@ var init = async function (middleware) {
   app.use(middleware.swaggerMetadata());
 
   // Validate Swagger requests
-  app.use(middleware.swaggerValidator());
+  app.use(middleware.swaggerValidator( {validateResponse: true}));
 
-  // Route validated requests to appropriate controller
+  if (!options) {   
+    setOptions();
+  }
   app.use(middleware.swaggerRouter(options));
 
   // Serve the Swagger documents and Swagger UI
@@ -44,16 +55,30 @@ var init = async function (middleware) {
   app.get('/', (req, res) => {
     res.render('index');
   });
+
+  console.log('init end')
 };
 
 var validate = function (callback) {
     Joi.validate(config, ConfigSchema, callback);
 };
-// Initialize the Swagger middleware
-swaggerTools.initializeMiddleware(swaggerDoc, (middleware)=> {
-    validate(() => {
-        init(middleware)
-    });
-});
 
-module.exports = app;
+var prepare = function (service) {
+
+    var controllers = {
+        Default_showNumberInfo: service.showNumberInfo
+    };
+
+    console.log('controllers:', controllers);
+    setOptions(controllers);
+
+    // Initialize the Swagger middleware
+    console.log('prepare')
+    swaggerTools.initializeMiddleware(swaggerDoc, (middleware)=> {
+        validate(() => {
+            init(middleware)
+        });
+    });
+}
+
+module.exports = {app, setOptions, prepare};
