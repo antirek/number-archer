@@ -29,6 +29,8 @@ paths:
       x-swagger-router-controller: "Default"
 definitions:
   Number:
+    required:
+      - "code"
     properties:
       code:
         type: "integer"

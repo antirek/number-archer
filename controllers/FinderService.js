@@ -3,11 +3,10 @@
 const config = require('config');
 const mongoose = require('mongoose');
 
-const FinderService = function(Resource, Finder) {
+var FinderService = function (Resource, Finder) {
 
-  let requestCounter = 1;
-  
-  var showNumberInfo = function(req, res, next) {  
+  var requestCounter = 1;  
+  var showNumberInfo = function (req, res, next) {  
 
     var args = req.swagger.params
     var timeoutId, timeExpired, requestId;
@@ -17,7 +16,7 @@ const FinderService = function(Resource, Finder) {
             timeExpired = true;
             res.status(500).json({status: 'Timeout expired'});
             console.log('timeout expired');
-        }, config.timeout || 2000);   //timeout in ms
+        }, config.timeout || 1000);   //timeout in ms
     }
 
     var isTimeoutNotExpired = function () {

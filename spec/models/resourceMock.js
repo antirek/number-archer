@@ -6,6 +6,7 @@ var Mock = function () {
         dbModel = {
             findOne: function (query, callback) {
                 callback(null, {
+                    code: 12,
                     number: 12
                 });
             }
@@ -18,6 +19,7 @@ var Mock = function () {
             findOne: function (query, callback) {
                 setTimeout(() => {
                     callback(null, {
+                        code: 12,
                         number: 12
                     });
                 }, 7000)

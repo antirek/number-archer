@@ -17,14 +17,14 @@ describe('Finder', function () {
         expectedCode = generateRandomCode();
     });
 
-    it('return code if there is appropriate document in db', function (done) {
+    it('return code if there is appropriate document in db', (done) => {
         var expectedQuery = {
             code: '391',
             begin: {
                 $lte: '2332211'
             },
             end: {
-                $gte: '2332211'
+                $gte: '2332211' 
             }
         };
         dbModel = {
