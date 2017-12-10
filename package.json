@@ -20,7 +20,7 @@
   },
   "scripts": {
     "test": "jasmine",
-    "start": "node index"
+    "start": "node app"
   },
   "repository": {
     "type": "git",

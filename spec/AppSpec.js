@@ -43,5 +43,4 @@ describe('App', () => {
               done()
             })
     })
-
 })

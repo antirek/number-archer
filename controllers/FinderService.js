@@ -8,6 +8,8 @@ var FinderService = function (Resource, Finder) {
   var requestCounter = 1;  
   var showNumberInfo = function (req, res, next) {  
 
+    mongoose.connect(config.mongo.connectionString);
+
     var args = req.swagger.params
     var timeoutId, timeExpired, requestId;
 
@@ -57,7 +59,7 @@ var FinderService = function (Resource, Finder) {
                   res.status(404).json({status: 'Not Found'});
               }
           } else {
-              console.log('request ready, but timeout expired');
+              console.log(  'request ready, but timeout expired');
               console.log(requestId, 'find:', doc);
           }
       })
