@@ -1,7 +1,7 @@
 version: "2"
 services:
   number-archer:
-    image: antirek/number-archer
+    build: .
     ports:
       - "3101:3101"
     environment:
