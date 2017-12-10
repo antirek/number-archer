@@ -17,14 +17,14 @@ describe('Finder', function () {
         expectedCode = generateRandomCode();
     });
 
-    it('return code if there is appropriate document in db', function (done) {
+    it('return code if there is appropriate document in db', (done) => {
         var expectedQuery = {
             code: '391',
             begin: {
                 $lte: '2332211'
             },
             end: {
-                $gte: '2332211'
+                $gte: '2332211' 
             }
         };
         dbModel = {
@@ -39,11 +39,11 @@ describe('Finder', function () {
             }
         };
         finder = new Finder(dbModel);
-        var resultPromise = finder.findCodeForNumber(testNumber);
-        resultPromise.then(function (doc) {
+        finder.findCodeForNumber(testNumber)
+          .then(function (doc) {
             expect(doc).toEqual({region: {code: expectedCode, county: expectedCounty}});
             done();
-        });
+          });
     });
 
     it('return "NULL" if there is no appropriate document in db', function (done) {
@@ -53,11 +53,11 @@ describe('Finder', function () {
             }
         };
         finder = new Finder(dbModel);
-        var resultPromise = finder.findCodeForNumber(testNumber);
-        resultPromise.then(function (doc) {
+        finder.findCodeForNumber(testNumber)
+          .then(function (doc) {
             expect(doc).toEqual(null);
             done();
-        });
+          });
     });
 
     it('promise call reject if findOne return error', function (done) {
@@ -68,10 +68,11 @@ describe('Finder', function () {
             }
         };
         finder = new Finder(dbModel);
-        var resultPromise = finder.findCodeForNumber(testNumber);
-        resultPromise.fail(function (err) {
+
+        finder.findCodeForNumber(testNumber)
+          .catch(function (err) {
             expect(err.message).toBe(expectedErrorMessage);
             done();
-        });
+          });
     });
 });

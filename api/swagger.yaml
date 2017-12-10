@@ -1,0 +1,59 @@
+swagger: "2.0"
+info:
+  version: "1.0.0"
+  title: "number-archer"
+schemes:
+- "http"
+- "https"
+consumes:
+- "application/json"
+produces:
+- "application/json"
+paths:
+  /number/{number}:
+    get:
+      summary: "Info for a specific number"
+      operationId: "showNumberInfo"
+      parameters:
+      - name: "number"
+        in: "path"
+        description: "number for search"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Expected response to a valid request"
+          schema:
+            $ref: "#/definitions/Number"
+        
+      x-swagger-router-controller: "Default"
+definitions:
+  Number:
+    required:
+      - "code"
+    properties:
+      code:
+        type: "integer"
+      begin:
+        type: "string"
+      end:
+        type: "string"
+      capacity:
+        type: "string"
+      operator:
+        type: "string"
+      region:        
+        type: "object"
+        properties: 
+          code:
+            type: "string"
+          title:
+            type: "string"
+          county:
+            type: "string"
+  Error:
+    required:
+    - "status"
+    properties:
+      status:
+        type: "string"

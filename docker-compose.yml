@@ -1,0 +1,13 @@
+version: "2"
+services:
+  number-archer:
+    build: .
+    ports:
+      - "3101:3101"
+    environment:
+      - NODE_ENV=default
+      - NODE_CONFIG_DIR=/etc/number-archer
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "./config:/etc/number-archer"
+    restart: always

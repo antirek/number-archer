@@ -5,14 +5,17 @@
   "main": "index.js",
   "dependencies": {
     "config": "^1.25.1",
+    "cors": "^2.8.4",
     "express": "^4.15.2",
     "joi": "^6.6.1",
     "mongoose": "^4.0.3",
     "pug": "^2.0.0-rc.1",
-    "request-ip": "^2.0.1",
+    "swagger-parser": "^4.0.1",
+    "swagger-tools": "^0.10.3",
     "tracer": "^0.8.7"
   },
   "devDependencies": {
+    "hippie-swagger": "^3.1.1",
     "jasmine": "^2.2.1"
   },
   "scripts": {
