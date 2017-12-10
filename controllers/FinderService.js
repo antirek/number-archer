@@ -1,16 +1,12 @@
-'use strict';
-
 const config = require('config');
-const mongoose = require('mongoose');
+const console = require('tracer').colorConsole();
 
 var FinderService = function (Resource, Finder) {
 
   var requestCounter = 1;  
   var showNumberInfo = function (req, res, next) {  
-
-    mongoose.connect(config.mongo.connectionString);
-
-    var args = req.swagger.params
+    
+    var args = req.swagger.params;
     var timeoutId, timeExpired, requestId;
 
     var bindTimeout = function (res) {

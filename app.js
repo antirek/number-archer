@@ -1,13 +1,18 @@
-var config = require('config');
+const config = require('config');
+const mongoose = require('mongoose');
+const console = require('tracer').colorConsole();
 
-var numberArcher = require('./index')();
+const numberArcher = require('./index')();
 
 const Finder = require('./lib/finder');
 
-var Resource = require('./lib/resourceSchema')
-var FinderService = require('./controllers/FinderService');
+const ResourceSchema = require('./lib/resourceSchema')
+const FinderService = require('./controllers/FinderService');
 
-var service = FinderService(Resource, Finder);
+mongoose.connect(config.mongo.connectionString, { useMongoClient: true });
+const Resource = mongoose.model('Resource', new ResourceSchema(config.mongo.collection));
+
+const service = FinderService(Resource, Finder);
 
 numberArcher.prepare(service);
 
