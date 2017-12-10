@@ -2,31 +2,13 @@
 
 Соответствие телефонных номеров и регионов РФ
 
+## badges
 
-## Использование
+![](https://travis-ci.org/antirek/number-archer.svg?branch=master)
 
-> curl http://localhost:3101/number/:number
+## Swagger
 
-### Пример 
-
-> curl http://localhost:3101/number/83912745000
-
-### Результат 
-
-`````javascript 
-{
-   "code":"391",
-   "begin":"2745000",
-   "end":"2745099",
-   "capacity":"100",
-   "operator":"qw",
-   "region":{
-      "code":"24",
-      "title":"Кр.край",
-      "county":"2"
-   }
-}
-`````
+> curl http://localhost:3101/docs
 
 ## Данные
 
