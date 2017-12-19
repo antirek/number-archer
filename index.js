@@ -3,7 +3,7 @@
 const fs = require('fs');
 const path = require('path');
 const http = require('http');
-const config = require('config');
+//const config = require('config');
 const console = require('tracer').colorConsole();
 const Joi = require('joi');
 const cors = require('cors');
@@ -19,6 +19,7 @@ var spec = fs.readFileSync(path.join(__dirname,'api/swagger.yaml'), 'utf8');
 var swaggerDoc = jsyaml.safeLoad(spec);
 
 var options;
+var config;
 
 var setOptions = function (controllers) {
     if (!options) {
@@ -28,7 +29,7 @@ var setOptions = function (controllers) {
     }
 }
 
-var init = async function (middleware) {
+var init = async function (middleware, config) {
   app.set('view engine', 'pug');
   app.use(cors());
 
@@ -36,18 +37,22 @@ var init = async function (middleware) {
   app.use(middleware.swaggerValidator( {validateResponse: true}));
 
   app.use(middleware.swaggerRouter(options));
-  app.use(middleware.swaggerUi());
+  
+  if (config.swagger) {
+    app.use(middleware.swaggerUi());
+  }
 
   app.get('/', (req, res) => {
     res.render('index');
   });
 };
 
-var validate = function (callback) {
-    Joi.validate(config, ConfigSchema, callback);
+var validate = function (config) {
+    //console.log(config, ConfigSchema);
+    return Joi.validate(config, ConfigSchema);
 };
 
-var prepare = function (service) {
+var prepare = function (service, config) {
 
     var controllers = {
         Default_showNumberInfo: service.showNumberInfo
@@ -55,9 +60,12 @@ var prepare = function (service) {
     setOptions(controllers);
 
     swaggerTools.initializeMiddleware(swaggerDoc, (middleware) => {
-        validate(() => {
-            init(middleware)
-        });
+        var res = validate(config);
+        if (res.error) {
+          console.log(res.error);
+          process.exit(1);
+        } 
+        init(middleware, config);
     });
 }
 

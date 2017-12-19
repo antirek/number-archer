@@ -9,6 +9,16 @@ var FinderService = require('./../controllers/FinderService');
 
 var dereferencedSwagger, app, resourceMock;
 
+const config = {
+    swagger: false, 
+    port: 3000,
+    timeout: 12000,
+    mongo: {
+        connectionString: 'mongodb://mongodb/number-archer',
+        collection: 'regions'
+    }
+};
+
 describe('App', () => {
 
     beforeEach((done) => {
@@ -29,7 +39,7 @@ describe('App', () => {
         var service = new FinderService(Resource, Finder);
         var numberArcher = require('./../index')();
 
-        numberArcher.prepare(service);
+        numberArcher.prepare(service, config);
         var app = numberArcher.app;
 
         hippie(app, dereferencedSwagger)
