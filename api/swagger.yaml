@@ -33,7 +33,7 @@ definitions:
       - "code"
     properties:
       code:
-        type: "integer"
+        type: "string"
       begin:
         type: "string"
       end:

@@ -47,9 +47,13 @@ describe('App', () => {
             .pathParams({number: 12})
             .expectStatus(200)
             .end(function(err, res, body) {
-              if (err) done(err);
-              console.log('all good:', body);
-              done()
+              if (err) {
+                console.log('err', err);
+                done(err);
+              } else {
+                console.log('all good:', body);
+                done()
+              }
             })
     })
 })

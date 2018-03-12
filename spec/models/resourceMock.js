@@ -6,8 +6,17 @@ var Mock = function () {
         dbModel = {
             findOne: function (query, callback) {
                 callback(null, {
-                    code: 12,
-                    number: 12
+                  "_id": 'sfsdfdsf',
+                  "code": '100',
+                  "begin": "2745000",
+                  "end": "2745001",
+                  "capacity": "1",
+                  "operator": "string telecom",
+                  "region": {
+                    "code": "223",
+                    "title": "наша область",
+                    "county": "3"
+                  }
                 });
             }
         };
