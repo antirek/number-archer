@@ -34,7 +34,7 @@ var init = async function (middleware, config) {
   app.use(cors());
 
   app.use(middleware.swaggerMetadata());
-  app.use(middleware.swaggerValidator( {validateResponse: true}));
+  app.use(middleware.swaggerValidator( {validateResponse: false}));
 
   app.use(middleware.swaggerRouter(options));
   

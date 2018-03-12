@@ -46,7 +46,6 @@ describe('App', () => {
             .get('/number/{number}')
             .pathParams({number: 12})
             .expectStatus(200)
-            .expectValue('number', 12)
             .end(function(err, res, body) {
               if (err) done(err);
               console.log('all good:', body);
