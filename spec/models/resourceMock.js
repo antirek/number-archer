@@ -36,8 +36,8 @@ var Mock = function () {
   }
 
   return {
-    getGoodModel: getGoodModel,
-    getSoLongLoadingModel: getSoLongLoadingModel
+    getGoodModel,
+    getSoLongLoadingModel
   }
 }
 

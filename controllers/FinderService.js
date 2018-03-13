@@ -38,6 +38,8 @@ var FinderService = function (Resource, Finder) {
     console.log(requestId, 'args:', args)
 
     var number = args.number.value
+    number = number.replace(/\+7/g, '8')
+
     console.log(requestId, 'number:', number)
 
     var finder = new Finder(Resource)

@@ -11,17 +11,17 @@ const cors = require('cors')
 const ConfigSchema = require('./lib/configSchema')
 const express = require('express')
 
-var app = express()
-var swaggerTools = require('swagger-tools')
-var jsyaml = require('js-yaml')
+let app = express()
+let swaggerTools = require('swagger-tools')
+let jsyaml = require('js-yaml')
 
-var spec = fs.readFileSync(path.join(__dirname, 'api/swagger.yaml'), 'utf8')
-var swaggerDoc = jsyaml.safeLoad(spec)
+let spec = fs.readFileSync(path.join(__dirname, 'api/swagger.yaml'), 'utf8')
+let swaggerDoc = jsyaml.safeLoad(spec)
 
-var options
-// var config
+let options
+// let config
 
-var setOptions = function (controllers) {
+let setOptions = (controllers) => {
   if (!options) {
     options = {
       controllers: controllers
@@ -29,7 +29,7 @@ var setOptions = function (controllers) {
   }
 }
 
-var init = async function (middleware, config) {
+let init = async (middleware, config) => {
   app.set('view engine', 'pug')
   app.use(cors())
 
@@ -47,19 +47,18 @@ var init = async function (middleware, config) {
   })
 }
 
-var validate = function (config) {
-  // console.log(config, ConfigSchema);
+let validate = (config) => {
   return Joi.validate(config, ConfigSchema)
 }
 
-var prepare = function (service, config) {
-  var controllers = {
+let prepare = (service, config) => {
+  let controllers = {
     Default_showNumberInfo: service.showNumberInfo
   }
   setOptions(controllers)
 
   swaggerTools.initializeMiddleware(swaggerDoc, (middleware) => {
-    var res = validate(config)
+    let res = validate(config)
     if (res.error) {
       console.log(res.error)
       process.exit(1)
@@ -68,6 +67,6 @@ var prepare = function (service, config) {
   })
 }
 
-module.exports = function () {
+module.exports = () => {
   return {app, prepare}
 }

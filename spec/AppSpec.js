@@ -4,10 +4,10 @@ const fs = require('fs')
 const path = require('path')
 const jsyaml = require('js-yaml')
 
-var Finder = require('./../lib/finder')
-var FinderService = require('./../controllers/FinderService')
+const Finder = require('./../lib/finder')
+const FinderService = require('./../controllers/FinderService')
 
-var dereferencedSwagger, app, resourceMock
+let dereferencedSwagger, app, resourceMock
 
 const config = {
   swagger: false,
@@ -21,10 +21,10 @@ const config = {
 
 describe('App', () => {
   beforeEach((done) => {
-    var spec = fs.readFileSync(path.join(__dirname, './../api/swagger.yaml'), 'utf8')
-    var swaggerDoc = jsyaml.safeLoad(spec)
+    let spec = fs.readFileSync(path.join(__dirname, './../api/swagger.yaml'), 'utf8')
+    let swaggerDoc = jsyaml.safeLoad(spec)
 
-    var parser = new SwaggerParser()
+    let parser = new SwaggerParser()
     parser.dereference(swaggerDoc, (err, derefSwagger) => {
       dereferencedSwagger = derefSwagger
       done()
@@ -32,20 +32,20 @@ describe('App', () => {
   })
 
   it('good exec', (done) => {
-    var resourceMock = require('./../spec/models/resourceMock')
-    var Resource = resourceMock.getGoodModel()
+    let resourceMock = require('./../spec/models/resourceMock')
+    let Resource = resourceMock.getGoodModel()
 
-    var service = new FinderService(Resource, Finder)
-    var numberArcher = require('./../index')()
+    let service = new FinderService(Resource, Finder)
+    let numberArcher = require('./../index')()
 
     numberArcher.prepare(service, config)
-    var app = numberArcher.app
+    let app = numberArcher.app
 
     hippie(app, dereferencedSwagger)
       .get('/number/{number}')
-      .pathParams({number: 12})
+      .pathParams({number: '89135292926'})
       .expectStatus(200)
-      .end(function (err, res, body) {
+      .end((err, res, body) => {
         if (err) {
           console.log('err', err)
           done(err)
@@ -55,4 +55,30 @@ describe('App', () => {
         }
       })
   })
+
+  it('good exec', (done) => {
+    let resourceMock = require('./../spec/models/resourceMock')
+    let Resource = resourceMock.getGoodModel()
+
+    let service = new FinderService(Resource, Finder)
+    let numberArcher = require('./../index')()
+
+    numberArcher.prepare(service, config)
+    let app = numberArcher.app
+
+    hippie(app, dereferencedSwagger)
+      .get('/number/{number}')
+      .pathParams({number: '+79135292926'})
+      .expectStatus(200)
+      .end((err, res, body) => {
+        if (err) {
+          console.log('err', err)
+          done(err)
+        } else {
+          console.log('all good:', body)
+          done()
+        }
+      })
+  })
+
 })
