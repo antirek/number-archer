@@ -16,10 +16,11 @@
   },
   "devDependencies": {
     "hippie-swagger": "^3.1.1",
-    "jasmine": "^2.2.1"
+    "jasmine": "^2.2.1",
+    "standard": "^11.0.0"
   },
   "scripts": {
-    "test": "jasmine",
+    "test": "standard --fix && jasmine",
     "start": "node app"
   },
   "repository": {
@@ -31,5 +32,10 @@
   "bugs": {
     "url": "https://github.com/antirek/number-archer/issues"
   },
-  "homepage": "https://github.com/antirek/number-archer"
+  "homepage": "https://github.com/antirek/number-archer",
+  "standard": {
+    "ignore": [
+      "/spec/"
+    ]
+  }
 }
