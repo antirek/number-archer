@@ -11,7 +11,7 @@
     "mongoose": "^4.0.3",
     "pug": "^2.0.0-rc.1",
     "swagger-parser": "^4.0.1",
-    "swagger-tools": "^0.10.3",
+    "swagger-tools": "^0.10.4",
     "tracer": "^0.8.7"
   },
   "devDependencies": {
