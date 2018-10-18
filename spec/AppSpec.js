@@ -31,7 +31,7 @@ describe('App', () => {
     })
   })
 
-  it('good exec', (done) => {
+  it('good exec full number', (done) => {
     let resourceMock = require('./../spec/models/resourceMock')
     let Resource = resourceMock.getGoodModel()
 
@@ -56,7 +56,7 @@ describe('App', () => {
       })
   })
 
-  it('good exec', (done) => {
+  it('good exec number with +7', (done) => {
     let resourceMock = require('./../spec/models/resourceMock')
     let Resource = resourceMock.getGoodModel()
 
@@ -69,6 +69,31 @@ describe('App', () => {
     hippie(app, dereferencedSwagger)
       .get('/number/{number}')
       .pathParams({number: '+79135292926'})
+      .expectStatus(200)
+      .end((err, res, body) => {
+        if (err) {
+          console.log('err', err)
+          done(err)
+        } else {
+          console.log('all good:', body)
+          done()
+        }
+      })
+  })
+
+  it('good exec number length 10', (done) => {
+    let resourceMock = require('./../spec/models/resourceMock')
+    let Resource = resourceMock.getGoodModel()
+
+    let service = new FinderService(Resource, Finder)
+    let numberArcher = require('./../index')()
+
+    numberArcher.prepare(service, config)
+    let app = numberArcher.app
+
+    hippie(app, dereferencedSwagger)
+      .get('/number/{number}')
+      .pathParams({number: '9135292926'})
       .expectStatus(200)
       .end((err, res, body) => {
         if (err) {

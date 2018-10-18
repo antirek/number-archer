@@ -38,7 +38,11 @@ var FinderService = function (Resource, Finder) {
     console.log(requestId, 'args:', args)
 
     var number = args.number.value
-    number = number.replace(/\+7/g, '8')
+    if (number.length === 10) {
+      number = '8' + number
+    } else if (number.length === 12) {
+      number = number.replace(/\+7/g, '8')
+    }
 
     console.log(requestId, 'number:', number)
 
