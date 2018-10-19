@@ -1,6 +1,6 @@
 # number-archer
 
-http-сервис для получения данных по региону и оператору телефонного номера
+self-hosted http-сервис для получения данных по региону и оператору телефонного номера РФ
 
 ![](https://travis-ci.org/antirek/number-archer.svg?branch=master)
 
