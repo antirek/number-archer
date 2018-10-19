@@ -35,7 +35,7 @@ describe('App', () => {
     let resourceMock = require('./../spec/models/resourceMock')
     let Resource = resourceMock.getGoodModel()
 
-    let service = new FinderService(Resource, Finder)
+    let service = FinderService(Resource, Finder)
     let numberArcher = require('./../index')()
 
     numberArcher.prepare(service, config)
@@ -60,7 +60,7 @@ describe('App', () => {
     let resourceMock = require('./../spec/models/resourceMock')
     let Resource = resourceMock.getGoodModel()
 
-    let service = new FinderService(Resource, Finder)
+    let service = FinderService(Resource, Finder)
     let numberArcher = require('./../index')()
 
     numberArcher.prepare(service, config)
@@ -85,7 +85,7 @@ describe('App', () => {
     let resourceMock = require('./../spec/models/resourceMock')
     let Resource = resourceMock.getGoodModel()
 
-    let service = new FinderService(Resource, Finder)
+    let service = FinderService(Resource, Finder)
     let numberArcher = require('./../index')()
 
     numberArcher.prepare(service, config)
