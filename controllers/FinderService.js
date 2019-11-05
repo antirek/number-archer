@@ -12,8 +12,9 @@ let FinderService = (Resource, Finder) => {
     let bindTimeout = (res) => {
       timeoutId = setTimeout(() => {
         timeExpired = true
-        res.status(500).json({status: 'Timeout expired'})
-        console.log('timeout expired')
+        console.log(requestId, 'timeout expired')
+        // res.status(500).json({status: 'Timeout expired'})
+        res.status(404).json({status: 'Not Found'})
       }, config.timeout || 1000) // timeout in ms
     }
 
@@ -36,38 +37,46 @@ let FinderService = (Resource, Finder) => {
       return q(requestCounter++, length)
     }
 
-    requestId = getRequestId()
-    console.log(requestId, 'args:', args)
-
-    let number = args.number.value
-    if (number.length === 10) {
-      number = '8' + number
-    } else if (number.length === 12) {
-      number = number.replace(/\+7/g, '8')
+    const start = () => {
+      return new Promise((resolve, reject) => {
+        let number = args.number.value
+        if (number.length === 10) {
+          number = '8' + number
+        } else if (number.length === 12 && number.startsWith('+7')) {
+          number = number.replace(/\+7/g, '8')
+        } else if (number.length >= 12) {
+          reject(new Error('not format number'))
+        }
+        resolve(number)
+      })
     }
 
-    console.log(requestId, 'number:', number)
+    start().then((number) => {
+      requestId = getRequestId()
+      console.log(requestId, 'args:', args)
+      console.log(requestId, 'number:', number)
 
-    let finder = new Finder(Resource)
-    finder.findCodeForNumber(number)
-      .then((doc) => {
-        if (isTimeoutNotExpired()) {
-          unbindTimeout()
-          console.log(requestId, 'ready, find:', doc)
-          if (doc) {
-            res.json(doc)
-          } else {
-            res.status(404).json({status: 'Not Found'})
-          }
-          console.log(requestId, 'time elapsed:', new Date().getTime() - startTime, 'ms')
+      let finder = new Finder(Resource)
+      return finder.findCodeForNumber(number)
+    }).then((doc) => {
+      if (isTimeoutNotExpired()) {
+        unbindTimeout()
+        console.log(requestId, 'ready, find:', doc)
+        if (doc) {
+          res.json(doc)
         } else {
-          console.log(requestId, 'request ready, but timeout expired')
-          console.log(requestId, 'find:', doc)
+          return Promise.reject(new Error('not found in db'))
+          // res.status(404).json({status: 'Not Found'})
         }
-      })
+        console.log(requestId, 'time elapsed:', new Date().getTime() - startTime, 'ms')
+      } else {
+        console.log(requestId, 'request ready, but timeout expired')
+        console.log(requestId, 'find:', doc)
+      }
+    })
       .catch((err) => {
         console.log(requestId, err)
-        res.status(500).json({status: 'Error'})
+        res.status(404).json({status: 'Not Found'})
       })
   }
 

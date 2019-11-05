@@ -106,4 +106,27 @@ describe('App', () => {
       })
   })
 
+
+  it('dont exec number length 12 without +', (done) => {
+    let resourceMock = require('./../spec/models/resourceMock')
+    let Resource = resourceMock.getGoodModel()
+
+    let service = FinderService(Resource, Finder)
+    let numberArcher = require('./../index')()
+
+    numberArcher.prepare(service, config)
+    let app = numberArcher.app
+
+    hippie(app, dereferencedSwagger)
+      .get('/number/{number}')
+      .pathParams({number: '989135292926'})
+      .expectStatus(404)
+      .end((err, res, body) => {
+        if (err) {
+          console.log('err', err)
+          done()
+        } 
+      })
+  })
+
 })
