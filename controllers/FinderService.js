@@ -37,6 +37,7 @@ let FinderService = (Resource, Finder) => {
       return q(requestCounter++, length)
     }
 
+
     const start = () => {
       return new Promise((resolve, reject) => {
         let number = args.number.value
@@ -50,12 +51,11 @@ let FinderService = (Resource, Finder) => {
         resolve(number)
       })
     }
+    requestId = getRequestId()
+    console.log(requestId, 'args:', args)
 
-    start().then((number) => {
-      requestId = getRequestId()
-      console.log(requestId, 'args:', args)
+    start().then((number) => {  
       console.log(requestId, 'number:', number)
-
       let finder = new Finder(Resource)
       return finder.findCodeForNumber(number)
     }).then((doc) => {
@@ -75,6 +75,7 @@ let FinderService = (Resource, Finder) => {
       }
     })
       .catch((err) => {
+        unbindTimeout()
         console.log(requestId, err)
         res.status(404).json({status: 'Not Found'})
       })
