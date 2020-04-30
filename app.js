@@ -8,7 +8,10 @@ const Finder = require('./lib/finder')
 const ResourceSchema = require('./lib/resourceSchema')
 const FinderService = require('./controllers/FinderService')
 
-mongoose.connect(config.mongo.connectionString, { useMongoClient: true })
+mongoose.connect(config.mongo.connectionString, {
+  useMongoClient: true
+})
+
 const Resource = mongoose.model('Resource', new ResourceSchema(config.mongo.collection))
 
 const service = FinderService(Resource, Finder)

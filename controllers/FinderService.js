@@ -37,7 +37,6 @@ let FinderService = (Resource, Finder) => {
       return q(requestCounter++, length)
     }
 
-
     const start = () => {
       return new Promise((resolve, reject) => {
         let number = args.number.value
@@ -45,7 +44,7 @@ let FinderService = (Resource, Finder) => {
           number = '8' + number
         } else if (number.length === 12 && number.startsWith('+7')) {
           number = number.replace(/\+7/g, '8')
-        } else if (number.length >= 12) {
+        } else if (number.length >= 12 || number.length <= 9) {
           reject(new Error('not format number'))
         }
         resolve(number)
@@ -54,7 +53,7 @@ let FinderService = (Resource, Finder) => {
     requestId = getRequestId()
     console.log(requestId, 'args:', args)
 
-    start().then((number) => {  
+    start().then((number) => {
       console.log(requestId, 'number:', number)
       let finder = new Finder(Resource)
       return finder.findCodeForNumber(number)
