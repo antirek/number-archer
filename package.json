@@ -8,7 +8,7 @@
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "joi": "^14.3.1",
-    "mongoose": "^4.13.20",
+    "mongoose": "^5.9.20",
     "pug": "^2.0.4",
     "swagger-parser": "^4.1.0",
     "swagger-tools": "^0.10.4",

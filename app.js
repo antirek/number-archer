@@ -9,7 +9,8 @@ const ResourceSchema = require('./lib/resourceSchema')
 const FinderService = require('./controllers/FinderService')
 
 mongoose.connect(config.mongo.connectionString, {
-  useMongoClient: true
+  useNewUrlParser: true,
+  useUnifiedTopology: true
 })
 
 const Resource = mongoose.model('Resource', new ResourceSchema(config.mongo.collection))
