@@ -4,20 +4,20 @@
   "description": "http server for find concordance of number and region code",
   "main": "index.js",
   "dependencies": {
-    "config": "^1.25.1",
-    "cors": "^2.8.4",
-    "express": "^4.15.2",
-    "joi": "^14.0.0",
-    "mongoose": "^4.13.14",
-    "pug": "^2.0.0-rc.1",
-    "swagger-parser": "^4.0.1",
+    "config": "^1.31.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "joi": "^14.3.1",
+    "mongoose": "^4.13.20",
+    "pug": "^2.0.4",
+    "swagger-parser": "^4.1.0",
     "swagger-tools": "^0.10.4",
-    "tracer": "^0.8.7"
+    "tracer": "^0.8.15"
   },
   "devDependencies": {
-    "hippie-swagger": "^3.1.1",
+    "hippie-swagger": "^3.2.0",
     "jasmine": "^2.2.1",
-    "standard": "^11.0.0"
+    "standard": "^11.0.1"
   },
   "scripts": {
     "test": "standard --fix && jasmine",
