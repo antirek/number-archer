@@ -10,7 +10,8 @@ const FinderService = require('./controllers/FinderService')
 
 mongoose.connect(config.mongo.connectionString, {
   useNewUrlParser: true,
-  useUnifiedTopology: true
+  useUnifiedTopology: true,
+  useCreateIndex: true
 })
 
 const Resource = mongoose.model('Resource', new ResourceSchema(config.mongo.collection))
