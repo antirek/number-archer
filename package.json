@@ -8,7 +8,7 @@
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "joi": "^14.3.1",
-    "mongoose": "^5.9.20",
+    "mongoose": "^5.9.22",
     "pug": "^2.0.4",
     "swagger-parser": "^4.1.0",
     "swagger-tools": "^0.10.4",
@@ -16,6 +16,7 @@
   },
   "devDependencies": {
     "hippie-swagger": "^3.2.0",
+    "husky": "^4.2.5",
     "jasmine": "^2.2.1",
     "standard": "^11.0.1"
   },
