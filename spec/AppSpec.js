@@ -1,13 +1,13 @@
-const hippie = require('hippie-swagger')
-const SwaggerParser = require('swagger-parser')
-const fs = require('fs')
-const path = require('path')
-const jsyaml = require('js-yaml')
+const hippie = require('hippie-swagger');
+const SwaggerParser = require('swagger-parser');
+const fs = require('fs');
+const path = require('path');
+const jsyaml = require('js-yaml');
 
-const Finder = require('./../lib/finder')
-const FinderService = require('./../controllers/FinderService')
+const Finder = require('./../lib/finder');
+const finderService = require('./../controllers/FinderService');
 
-let dereferencedSwagger, app, resourceMock
+let dereferencedSwagger;
 
 const config = {
   swagger: false,
@@ -15,31 +15,32 @@ const config = {
   timeout: 12000,
   mongo: {
     connectionString: 'mongodb://mongodb/number-archer',
-    collection: 'regions'
-  }
-}
+    collection: 'regions',
+  },
+};
 
 describe('App', () => {
   beforeEach((done) => {
-    let spec = fs.readFileSync(path.join(__dirname, './../api/swagger.yaml'), 'utf8')
-    let swaggerDoc = jsyaml.safeLoad(spec)
+    let spec = fs.readFileSync(
+      path.join(__dirname, './../api/swagger.yaml'), 'utf8');
+    let swaggerDoc = jsyaml.safeLoad(spec);
 
-    let parser = new SwaggerParser()
+    let parser = new SwaggerParser();
     parser.dereference(swaggerDoc, (err, derefSwagger) => {
-      dereferencedSwagger = derefSwagger
-      done()
-    })
-  })
+      dereferencedSwagger = derefSwagger;
+      done();
+    });
+  });
 
   it('good exec full number', (done) => {
-    let resourceMock = require('./../spec/models/resourceMock')
-    let Resource = resourceMock.getGoodModel()
+    let resourceMock = require('./../spec/models/resourceMock');
+    let Resource = resourceMock.getGoodModel();
 
-    let service = FinderService(Resource, Finder)
-    let numberArcher = require('./../index')()
+    let service = finderService(Resource, Finder);
+    let numberArcher = require('./../index')();
 
-    numberArcher.prepare(service, config)
-    let app = numberArcher.app
+    numberArcher.prepare(service, config);
+    let app = numberArcher.app;
 
     hippie(app, dereferencedSwagger)
       .get('/number/{number}')
@@ -47,24 +48,24 @@ describe('App', () => {
       .expectStatus(200)
       .end((err, res, body) => {
         if (err) {
-          console.log('err', err)
-          done(err)
+          console.log('err', err);
+          done(err);
         } else {
-          console.log('all good:', body)
-          done()
+          console.log('all good:', body);
+          done();
         }
-      })
-  })
+      });
+  });
 
   it('good exec number with +7', (done) => {
-    let resourceMock = require('./../spec/models/resourceMock')
-    let Resource = resourceMock.getGoodModel()
+    let resourceMock = require('./../spec/models/resourceMock');
+    let Resource = resourceMock.getGoodModel();
 
-    let service = FinderService(Resource, Finder)
-    let numberArcher = require('./../index')()
+    let service = finderService(Resource, Finder);
+    let numberArcher = require('./../index')();
 
-    numberArcher.prepare(service, config)
-    let app = numberArcher.app
+    numberArcher.prepare(service, config);
+    let app = numberArcher.app;
 
     hippie(app, dereferencedSwagger)
       .get('/number/{number}')
@@ -72,24 +73,24 @@ describe('App', () => {
       .expectStatus(200)
       .end((err, res, body) => {
         if (err) {
-          console.log('err', err)
-          done(err)
+          console.log('err', err);
+          done(err);
         } else {
-          console.log('all good:', body)
-          done()
+          console.log('all good:', body);
+          done();
         }
-      })
-  })
+      });
+  });
 
   it('good exec number length 10', (done) => {
-    let resourceMock = require('./../spec/models/resourceMock')
-    let Resource = resourceMock.getGoodModel()
+    let resourceMock = require('./../spec/models/resourceMock');
+    let Resource = resourceMock.getGoodModel();
 
-    let service = FinderService(Resource, Finder)
-    let numberArcher = require('./../index')()
+    let service = finderService(Resource, Finder);
+    let numberArcher = require('./../index')();
 
-    numberArcher.prepare(service, config)
-    let app = numberArcher.app
+    numberArcher.prepare(service, config);
+    let app = numberArcher.app;
 
     hippie(app, dereferencedSwagger)
       .get('/number/{number}')
@@ -97,25 +98,25 @@ describe('App', () => {
       .expectStatus(200)
       .end((err, res, body) => {
         if (err) {
-          console.log('err', err)
-          done(err)
+          console.log('err', err);
+          done(err);
         } else {
-          console.log('all good:', body)
-          done()
+          console.log('all good:', body);
+          done();
         }
-      })
-  })
+      });
+  });
 
 
   it('dont exec number length 12 without +', (done) => {
-    let resourceMock = require('./../spec/models/resourceMock')
-    let Resource = resourceMock.getGoodModel()
+    let resourceMock = require('./../spec/models/resourceMock');
+    let Resource = resourceMock.getGoodModel();
 
-    let service = FinderService(Resource, Finder)
-    let numberArcher = require('./../index')()
+    let service = finderService(Resource, Finder);
+    let numberArcher = require('./../index')();
 
-    numberArcher.prepare(service, config)
-    let app = numberArcher.app
+    numberArcher.prepare(service, config);
+    let app = numberArcher.app;
 
     hippie(app, dereferencedSwagger)
       .get('/number/{number}')
@@ -123,10 +124,9 @@ describe('App', () => {
       .expectStatus(404)
       .end((err, res, body) => {
         if (err) {
-          console.log('err', err)
-          done()
-        } 
-      })
-  })
-
-})
+          console.log('err', err);
+          done();
+        }
+      });
+  });
+});

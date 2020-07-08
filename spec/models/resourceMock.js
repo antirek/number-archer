@@ -1,8 +1,8 @@
 
-var Mock = function () {
-  var getGoodModel = function () {
+let mock = function() {
+  let getGoodModel = function() {
     dbModel = {
-      findOne: function (query, callback) {
+      findOne: function(query, callback) {
         callback(null, {
           '_id': 'sfsdfdsf',
           'code': '100',
@@ -13,32 +13,32 @@ var Mock = function () {
           'region': {
             'code': '223',
             'title': 'наша область',
-            'county': '3'
-          }
-        })
-      }
-    }
-    return dbModel
-  }
+            'county': '3',
+          },
+        });
+      },
+    };
+    return dbModel;
+  };
 
-  var getSoLongLoadingModel = function () {
+  let getSoLongLoadingModel = function() {
     dbModel = {
-      findOne: function (query, callback) {
+      findOne: function(query, callback) {
         setTimeout(() => {
           callback(null, {
             code: 12,
-            number: 12
-          })
-        }, 7000)
-      }
-    }
-    return dbModel
-  }
+            number: 12,
+          });
+        }, 7000);
+      },
+    };
+    return dbModel;
+  };
 
   return {
     getGoodModel,
-    getSoLongLoadingModel
-  }
-}
+    getSoLongLoadingModel,
+  };
+};
 
-module.exports = Mock()
+module.exports = mock();

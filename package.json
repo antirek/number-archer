@@ -18,10 +18,12 @@
     "hippie-swagger": "^3.2.0",
     "husky": "^4.2.5",
     "jasmine": "^2.2.1",
-    "standard": "^11.0.1"
+    "lint-staged": "^10.2.11",
+    "eslint": "^4.19.1",
+    "eslint-config-google": "^0.9.1"
   },
   "scripts": {
-    "test": "standard --fix && jasmine",
+    "test": "jasmine",
     "start": "node app"
   },
   "repository": {
@@ -38,5 +40,13 @@
     "ignore": [
       "/spec/"
     ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged && npm test"
+    }
+  },
+  "lint-staged": {
+    "*.js": "eslint --fix"
   }
 }
